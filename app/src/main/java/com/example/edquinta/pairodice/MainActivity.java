@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
-
+    //dice
     public void rollDice(){
         int roll1 = 1 + (int)(6*Math.random());
         int roll2 = 1 + (int)(6*Math.random());
