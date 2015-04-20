@@ -2,7 +2,6 @@ package com.example.edquinta.pairodice;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,10 +12,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.edquinta.pairodice.Player2;
+import android.content.Intent;
+
+import com.example.edquinta.pairodice.R;
 
 
-public class MainActivity extends ActionBarActivity {
+public class Player2 extends ActionBarActivity {
     private FrameLayout die1, die2;
     private Button roll, hold;
     private int score, roundScore, round, player1, player2;
@@ -26,10 +27,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.player2);
 
         die1 = (FrameLayout)findViewById(R.id.die1);
         die2 = (FrameLayout)findViewById(R.id.die2);
+
         txtValue = (TextView) findViewById(R.id.round);
         p1 = (TextView) findViewById(R.id.p1);
         p2 = (TextView) findViewById(R.id.them);
@@ -37,39 +39,7 @@ public class MainActivity extends ActionBarActivity {
 
         player1 = 0;
         player2 = 0;
-        me = "Player1:";
-
-        hold = (Button)findViewById(R.id.hold);
-        hold.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                player1 += round;
-                if (player1 >= 100) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("You Win!");
-                    alertDialog.setMessage("You da the man");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
-                else{
-                    Intent intent = new Intent(MainActivity.this, Player2.class);
-                    intent.putExtra("score", round);
-                   // player1 = player1 + round;
-                    intent.putExtra("p1", player1);
-                    intent.putExtra("p2", player2);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(intent);
-                }
-
-            }
-
-
-        });
+        me = "Player2:";
 
         Intent intent = getIntent();
         score = intent.getIntExtra("score", 0);
@@ -81,16 +51,46 @@ public class MainActivity extends ActionBarActivity {
         setPlayer2(player2);
         setMe(me);
 
-        round = 0;
+        hold = (Button)findViewById(R.id.hold);
+        hold.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                player2 += round;
+
+                if (player2 >= 100) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(Player2.this).create();
+                    alertDialog.setTitle("You Win!");
+                    alertDialog.setMessage("You da the man");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else{
+                    Intent intent = new Intent(Player2.this, MainActivity.class);
+                    intent.putExtra("score", round);
+                    intent.putExtra("p1", player1);
+                    //player2 = player2 + round;
+                    intent.putExtra("p2", player2);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+
         roll = (Button)findViewById(R.id.button);
         roll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 rollDice();
-
             }
         });
+
+
     }
 
     public void setPlayer1(int value){
@@ -104,6 +104,7 @@ public class MainActivity extends ActionBarActivity {
     public void setMe(String name){
         player.setText(name);
     }
+
     public void rollDice(){
         int roll1 = 1 + (int)(6*Math.random());
         int roll2 = 1 + (int)(6*Math.random());
@@ -124,12 +125,12 @@ public class MainActivity extends ActionBarActivity {
         if(num1 == 1 || num2 == 1){
             round1 = 0;
             round = 0;
-            Intent intent = new Intent(MainActivity.this, Player2.class);
+            Intent intent = new Intent(Player2.this, MainActivity.class);
             score = round;
-            player1 = player1 + round;
-            intent.putExtra("p1", player1);
-            intent.putExtra("p2", player2);
             intent.putExtra("score", score);
+            intent.putExtra("p1", player1);
+            player2 = player2 + round;
+            intent.putExtra("p2", player2);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
@@ -143,7 +144,6 @@ public class MainActivity extends ActionBarActivity {
         txtValue.setText("Round: " + Integer.toString(value));
 
     }
-
 
     public void setDie(int value, FrameLayout die) {
         Drawable pic =  null;
@@ -193,3 +193,4 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+

@@ -3,4 +3,5 @@
     <color name ="button_pressed">#ff0000</color>
     <color name ="button_text">#ffffff</color>
     <color name="background">#005500</color>
+    <color name="background2">#3333CC</color>
 </resources>
