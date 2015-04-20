@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
         player2 = 0;
         me = "Player1:";
 
+
         hold = (Button)findViewById(R.id.hold);
         hold.setOnClickListener(new View.OnClickListener(){
             @Override
